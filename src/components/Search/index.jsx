@@ -1,7 +1,9 @@
 import React from "react";
 import styles from "./search.module.scss";
+import { SearchContext } from "App";
 
-export const Search = ({ searchValue, setSearchValue }) => {
+export const Search = () => {
+  const { searchValue, setSearchValue } = React.useContext(SearchContext);
   return (
     <div className={styles.root}>
       <svg
@@ -36,10 +38,10 @@ export const Search = ({ searchValue, setSearchValue }) => {
           <defs />
           <g
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
             id="Page-1"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
           >
             <g
               fill="#000000"
