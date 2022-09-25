@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import { Categories } from "../components/Categories";
 import { Sort } from "../components/Sort";
@@ -13,15 +14,20 @@ import { useDispatch, useSelector } from "react-redux";
 export const Home = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const categoryId = useSelector(filterSelectors.getCategoryId);
 
   const sortType = useSelector((state) => state.filter.sort.sortProperty);
 
+  const currentPage = useSelector(filterSelectors.getCurrentPage);
+
   const dispatch = useDispatch();
 
   const onChangeCategory = (id) => dispatch(filterActions.setCategoryId(id));
+
+  const onChangePage = (number) => {
+    dispatch(filterActions.setCurrentPage(number));
+  };
 
   const { searchValue } = React.useContext(SearchContext);
 
@@ -31,12 +37,13 @@ export const Home = () => {
     const sortBy = sortType.replace("-", "");
     const order = sortType.includes("-") ? "asc" : "desc";
     const search = searchValue ? `&search=${searchValue}` : "";
-    fetch(
-      `https://6328dc1dd2c97d8c525e3c1f.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-    )
-      .then((res) => res.json())
-      .then((json) => {
-        setItems(json);
+
+    axios
+      .get(
+        `https://6328dc1dd2c97d8c525e3c1f.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+      )
+      .then((res) => {
+        setItems(res.data);
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
@@ -54,7 +61,7 @@ export const Home = () => {
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
           : items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)}
       </div>
-      <Pagination onChangePage={(number) => setCurrentPage(number)} />
+      <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   );
 };
