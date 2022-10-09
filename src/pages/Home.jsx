@@ -10,16 +10,19 @@ import { SearchContext } from "App";
 
 import { filterSelectors, filterActions } from "redux/filterSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchPizzas, productsPageSelectors } from "redux/productsPageSlice";
 
 export const Home = () => {
-  const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   const categoryId = useSelector(filterSelectors.getCategoryId);
 
   const sortType = useSelector((state) => state.filter.sort.sortProperty);
 
   const currentPage = useSelector(filterSelectors.getCurrentPage);
+
+  const items = useSelector(productsPageSelectors.getProducts);
+
+  const isLoading = useSelector(productsPageSelectors.isLoading);
+  const isError = useSelector(productsPageSelectors.isError);
 
   const dispatch = useDispatch();
 
@@ -32,20 +35,13 @@ export const Home = () => {
   const { searchValue } = React.useContext(SearchContext);
 
   useEffect(() => {
-    setIsLoading(true);
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const sortBy = sortType.replace("-", "");
     const order = sortType.includes("-") ? "asc" : "desc";
     const search = searchValue ? `&search=${searchValue}` : "";
 
-    axios
-      .get(
-        `https://6328dc1dd2c97d8c525e3c1f.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-      )
-      .then((res) => {
-        setItems(res.data);
-        setIsLoading(false);
-      });
+    dispatch(fetchPizzas({ category, sortBy, order, search, currentPage }));
+
     window.scrollTo(0, 0);
   }, [categoryId, sortType, searchValue, currentPage]);
 
@@ -56,11 +52,18 @@ export const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {isLoading
-          ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-          : items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)}
-      </div>
+      {isError ? (
+        <div>
+          <h2>Ой, попробуйте позже</h2>
+        </div>
+      ) : (
+        <div className="content__items">
+          {isLoading
+            ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
+            : items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)}
+        </div>
+      )}
+
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   );
