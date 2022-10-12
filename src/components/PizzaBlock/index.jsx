@@ -8,11 +8,9 @@ export const PizzaBlock = ({ id, title, imageUrl, sizes, price, types }) => {
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
 
-  const cartItem = useSelector((state) =>
-    state.cart.items.find((obj) => obj.id === id)
-  );
+  const cartItems = useSelector(cartSelectors.getCartItemsById(id));
 
-  const addedCount = cartItem ? cartItem.count : 0;
+  const addedCount = cartItems ? cartItems.count : 0;
 
   const dispatch = useDispatch();
 

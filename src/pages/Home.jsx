@@ -11,13 +11,16 @@ import { SearchContext } from "App";
 import { filterSelectors, filterActions } from "redux/filterSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPizzas, productsPageSelectors } from "redux/productsPageSlice";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   const categoryId = useSelector(filterSelectors.getCategoryId);
 
-  const sortType = useSelector((state) => state.filter.sort.sortProperty);
+  const sortType = useSelector(filterSelectors.getSortType);
 
   const currentPage = useSelector(filterSelectors.getCurrentPage);
+
+  const searchValue = useSelector(filterSelectors.getSearchValue);
 
   const items = useSelector(productsPageSelectors.getProducts);
 
@@ -32,15 +35,13 @@ export const Home = () => {
     dispatch(filterActions.setCurrentPage(number));
   };
 
-  const { searchValue } = React.useContext(SearchContext);
-
   useEffect(() => {
     const category = categoryId > 0 ? `category=${categoryId}` : "";
-    const sortBy = sortType.replace("-", "");
-    const order = sortType.includes("-") ? "asc" : "desc";
+    const sortBy = sortType.sortProperty.replace("-", "");
+    const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
     const search = searchValue ? `&search=${searchValue}` : "";
 
-    dispatch(fetchPizzas({ category, sortBy, order, search, currentPage }));
+    dispatch(fetchPizzas({ category, sortBy, order, currentPage, search }));
 
     window.scrollTo(0, 0);
   }, [categoryId, sortType, searchValue, currentPage]);
@@ -60,7 +61,11 @@ export const Home = () => {
         <div className="content__items">
           {isLoading
             ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-            : items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)}
+            : items.map((obj) => (
+                <Link key={obj.id} to={`/pizza/${obj.id}`}>
+                  <PizzaBlock {...obj} />
+                </Link>
+              ))}
         </div>
       )}
 
