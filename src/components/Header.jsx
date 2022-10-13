@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import logoSvg from "../assets/img/pizza-logo.svg";
 import { Search } from "./Search";
-import { cartSelectors } from "redux/cartSlice";
+import { cartSelectors } from "../redux/cartSlice";
 import { useSelector } from "react-redux";
 
 export const Header = () => {

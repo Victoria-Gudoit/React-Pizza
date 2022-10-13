@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { LOAD_STATUSES } from "redux/constants";
+import { LOAD_STATUSES } from "../constants";
 
 export const fetchPizzas = createAsyncThunk(
   "pizza/fetchPizzasStatus",

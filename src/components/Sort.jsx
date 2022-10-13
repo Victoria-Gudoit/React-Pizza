@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { filterSelectors, filterActions } from "redux/filterSlice";
+import { filterSelectors, filterActions } from "../redux/filterSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export const sortList = [

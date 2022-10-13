@@ -5,12 +5,11 @@ import { Categories } from "../components/Categories";
 import { Sort } from "../components/Sort";
 import { PizzaBlock } from "../components/PizzaBlock";
 import { Skeleton } from "../components/PizzaBlock/Skeleton";
-import { Pagination } from "components/Pagination";
-import { SearchContext } from "App";
+import { Pagination } from "../components/Pagination";
 
-import { filterSelectors, filterActions } from "redux/filterSlice";
+import { filterSelectors, filterActions } from "../redux/filterSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPizzas, productsPageSelectors } from "redux/productsPageSlice";
+import { fetchPizzas, productsPageSelectors } from "../redux/productsPageSlice";
 import { Link } from "react-router-dom";
 
 export const Home = () => {

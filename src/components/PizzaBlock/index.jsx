@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { cartActions, cartSelectors } from "redux/cartSlice";
+import { cartActions, cartSelectors } from "../../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const typeNames = ["тонкое", "традиционное"];

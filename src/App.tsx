@@ -5,8 +5,8 @@ import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Cart } from "./pages/Cart";
 import { NotFound } from "./pages/NotFound";
-import { FullPizza } from "pages/FullPizza";
-import { MainLayout } from "layouts/MainLayout";
+import { FullPizza } from "./pages/FullPizza";
+import { MainLayout } from "./layouts/MainLayout";
 
 export const App = () => {
   return (

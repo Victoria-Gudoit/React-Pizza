@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useCallback } from "react";
 import { debounce } from "lodash";
 import { useDispatch } from "react-redux";
-import { filterActions } from "redux/filterSlice";
+import { filterActions } from "../../redux/filterSlice";
 
 export const Search = () => {
   const [value, setValue] = useState("");
