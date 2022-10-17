@@ -1,10 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { cartActions, cartSelectors } from "../../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const typeNames = ["тонкое", "традиционное"];
 
-export const PizzaBlock = ({ id, title, imageUrl, sizes, price, types }) => {
+type PizzaBlockProps = {
+  id: string, title: string, imageUrl: string, sizes: number[], price: number, types: number[]
+}
+
+export const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, title, imageUrl, sizes, price, types }) => {
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
 

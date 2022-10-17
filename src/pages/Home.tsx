@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, {useEffect } from "react";
 
 import { Categories } from "../components/Categories";
 import { Sort } from "../components/Sort";
@@ -12,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPizzas, productsPageSelectors } from "../redux/productsPageSlice";
 import { Link } from "react-router-dom";
 
-export const Home = () => {
+export const Home: React.FC = () => {
   const categoryId = useSelector(filterSelectors.getCategoryId);
 
   const sortType = useSelector(filterSelectors.getSortType);
@@ -28,10 +27,10 @@ export const Home = () => {
 
   const dispatch = useDispatch();
 
-  const onChangeCategory = (id) => dispatch(filterActions.setCategoryId(id));
+  const onChangeCategory = (index: number) => dispatch(filterActions.setCategoryId(index));
 
-  const onChangePage = (number) => {
-    dispatch(filterActions.setCurrentPage(number));
+  const onChangePage = (page: number) => {
+    dispatch(filterActions.setCurrentPage(page));
   };
 
   useEffect(() => {
@@ -40,7 +39,8 @@ export const Home = () => {
     const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
     const search = searchValue ? `&search=${searchValue}` : "";
 
-    dispatch(fetchPizzas({ category, sortBy, order, currentPage, search }));
+    dispatch( //@ts-ignore
+     fetchPizzas({ category, sortBy, order, currentPage, search }));
 
     window.scrollTo(0, 0);
   }, [categoryId, sortType, searchValue, currentPage]);
@@ -60,7 +60,7 @@ export const Home = () => {
         <div className="content__items">
           {isLoading
             ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-            : items.map((obj) => (
+            : items.map((obj: any) => (
                 <Link key={obj.id} to={`/pizza/${obj.id}`}>
                   <PizzaBlock {...obj} />
                 </Link>
