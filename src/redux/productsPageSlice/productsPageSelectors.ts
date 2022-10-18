@@ -3,12 +3,13 @@ import {
   getIsLoadedSeletor,
   getIsErrorSeletor,
 } from "../common/utils";
+import { RootState } from "../store";
 
-const getProductsPage = (state) => state.products;
+const getProductsPage = (state: RootState) => state.products;
 
-export const getProducts = (state) => getProductsPage(state).items;
+export const getProducts = (state: RootState) => getProductsPage(state).items;
 
-export const getLoadStatus = (state) => state.products.loadStatus;
+export const getLoadStatus = (state: RootState) => state.products.loadStatus;
 
 export const isLoading = getIsLoadingSeletor(getLoadStatus);
 export const isLoaded = getIsLoadedSeletor(getLoadStatus);
