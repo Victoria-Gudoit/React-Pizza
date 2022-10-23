@@ -1,16 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-type Sort = {
-    name: string,
-    sortProperty: string
-}
-
-interface FilterSliceState {
-  searchValue: string,
-  categoryId: number,
-  currentPage: number,
-  sort: Sort;
-}
+import { Sort, FilterSliceState } from "./types";
 
 const initialState: FilterSliceState = {
   searchValue: "",

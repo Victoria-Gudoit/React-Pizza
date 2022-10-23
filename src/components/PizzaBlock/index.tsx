@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { cartActions, cartSelectors } from "../../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { CartItem } from "../../redux/cartSlice/cartSlice";
+import { CartItem } from "../../redux/cartSlice/types";
 import { Link } from "react-router-dom";
 
 const typeNames = ["тонкое", "традиционное"];
