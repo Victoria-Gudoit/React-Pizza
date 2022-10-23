@@ -1,4 +1,4 @@
-import React, {useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 
 import { Categories } from "../components/Categories";
 import { Sort } from "../components/Sort";
@@ -7,9 +7,9 @@ import { Skeleton } from "../components/PizzaBlock/Skeleton";
 import { Pagination } from "../components/Pagination";
 
 import { filterSelectors, filterActions } from "../redux/filterSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { fetchPizzas, productsPageSelectors } from "../redux/productsPageSlice";
-import { Link } from "react-router-dom";
+import { useAppDispatch } from "../redux/store";
 
 export const Home: React.FC = () => {
   const categoryId = useSelector(filterSelectors.getCategoryId);
@@ -25,9 +25,11 @@ export const Home: React.FC = () => {
   const isLoading = useSelector(productsPageSelectors.isLoading);
   const isError = useSelector(productsPageSelectors.isError);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const onChangeCategory = (index: number) => dispatch(filterActions.setCategoryId(index));
+  const onChangeCategory = useCallback((index: number) => {
+    dispatch(filterActions.setCategoryId(index));
+  }, []);
 
   const onChangePage = (page: number) => {
     dispatch(filterActions.setCurrentPage(page));
@@ -39,8 +41,15 @@ export const Home: React.FC = () => {
     const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
     const search = searchValue ? `&search=${searchValue}` : "";
 
-    dispatch( //@ts-ignore
-     fetchPizzas({ category, sortBy, order, currentPage, search }));
+    dispatch(
+      fetchPizzas({
+        category,
+        sortBy,
+        order,
+        currentPage: String(currentPage),
+        search,
+      })
+    );
 
     window.scrollTo(0, 0);
   }, [categoryId, sortType, searchValue, currentPage]);
@@ -60,11 +69,7 @@ export const Home: React.FC = () => {
         <div className="content__items">
           {isLoading
             ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-            : items.map((obj: any) => (
-                <Link key={obj.id} to={`/pizza/${obj.id}`}>
-                  <PizzaBlock {...obj} />
-                </Link>
-              ))}
+            : items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />)}
         </div>
       )}
 

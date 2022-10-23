@@ -1,15 +1,15 @@
-import { useState, useRef, useEffect, MouseEventHandler } from "react";
+import React, { useState, useRef, useEffect, memo } from "react";
 import { filterSelectors, filterActions } from "../redux/filterSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 type SortItem = {
   name: string;
   sortProperty: string;
-}
+};
 
 type PopupClick = MouseEvent & {
-  path: Node[]
-}
+  path: Node[];
+};
 
 export const sortList: SortItem[] = [
   { name: "популярности ↓", sortProperty: "rating" },
@@ -20,7 +20,7 @@ export const sortList: SortItem[] = [
   { name: "алфавиту ↑", sortProperty: "-title" },
 ];
 
-export const Sort = () => {
+export const Sort: React.FC = memo(() => {
   const [open, setOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
 
@@ -82,4 +82,4 @@ export const Sort = () => {
       )}
     </div>
   );
-};
+});
